@@ -14,17 +14,26 @@ var Time = new Date(testJson.Dates + " "+testJson.Time);
 var options = { method: 'GET',
   url: 'https://api.yelp.com/v3/businesses/search',
   qs: { location: testJson.Location,
-  		term: testJson.Cuisine,
-		limit: 4},
+      term: testJson.Cuisine,
+    limit: 4},
   headers: 
    { 'cache-control': 'no-cache',
-  	 'authorization':  'Bearer ' + tokenId
- 	}
+     'authorization':  'Bearer ' + tokenId
+  }
  };
 
 request(options, function (error, response, body) {
   if (error) throw new Error(error);
-  var suggestions = JSON.parse(body).businesses;
+  var suggestions = JSON.parse(body).businesses[0];
   console.log("response size = " + suggestions.length);
-  console.log(body);
+  console.log(JSON.stringify(suggestions));
+
+  var loc = "";
+  for(let i = 0; i < suggestions.location.display_address.length; i ++){
+    loc += suggestions.location.display_address[i];
+  }
+  var msgTosend = "You have booked the " + testJson.Cuisine +  " Cuisine: " 
+  + suggestions.name + ", at " + loc + " for " 
+  + testJson.People + " people. Enjoy your meal!";
+  console.log(msgTosend);
 });
