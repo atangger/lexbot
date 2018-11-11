@@ -24,9 +24,9 @@ exports.handler = function(event, context,callback) {
     var nowDateUnix = nowDate.getTime().toString();
     
     var dynamoparams = {
-      TableName: 'testTable',
+      TableName: 'RequesRecords',
       Item: {
-          name: nowDateUnix,
+          timestamp: nowDateUnix,
           message: body
       }
     };
@@ -66,12 +66,12 @@ exports.handler = function(event, context,callback) {
     var options = { method: 'GET',
       url: 'https://api.yelp.com/v3/businesses/search',
       qs: { location: testJson.Location,
-      		term: testJson.Cuisine,
-    		limit: 4},
+          term: testJson.Cuisine,
+        limit: 4},
       headers: 
        { 'cache-control': 'no-cache',
-      	 'authorization':  'Bearer ' + tokenId
-     	}
+         'authorization':  'Bearer ' + tokenId
+      }
      };
     
     request(options, function (error, response, body) {
